@@ -8,20 +8,24 @@
 
 /* Begin PBXBuildFile section */
 		91A08BBF2205E2F300D7FBEE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A08BBE2205E2F300D7FBEE /* AppDelegate.swift */; };
-		91A08BC12205E2F300D7FBEE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A08BC02205E2F300D7FBEE /* ViewController.swift */; };
+		91A08BC12205E2F300D7FBEE /* BrowseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A08BC02205E2F300D7FBEE /* BrowseViewController.swift */; };
 		91A08BC42205E2F300D7FBEE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91A08BC22205E2F300D7FBEE /* Main.storyboard */; };
 		91A08BC62205E2F600D7FBEE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 91A08BC52205E2F600D7FBEE /* Assets.xcassets */; };
 		91A08BC92205E2F600D7FBEE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91A08BC72205E2F600D7FBEE /* LaunchScreen.storyboard */; };
+		91A08BD12205E3F100D7FBEE /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A08BD02205E3F100D7FBEE /* SearchViewController.swift */; };
+		91A08BD32205E46700D7FBEE /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A08BD22205E46700D7FBEE /* FavoritesViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		91A08BBB2205E2F300D7FBEE /* GitHubBrowserV2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitHubBrowserV2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		91A08BBE2205E2F300D7FBEE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		91A08BC02205E2F300D7FBEE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		91A08BC02205E2F300D7FBEE /* BrowseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseViewController.swift; sourceTree = "<group>"; };
 		91A08BC32205E2F300D7FBEE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		91A08BC52205E2F600D7FBEE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		91A08BC82205E2F600D7FBEE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		91A08BCA2205E2F600D7FBEE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		91A08BD02205E3F100D7FBEE /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		91A08BD22205E46700D7FBEE /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,9 +58,11 @@
 		91A08BBD2205E2F300D7FBEE /* GitHubBrowserV2 */ = {
 			isa = PBXGroup;
 			children = (
-				91A08BBE2205E2F300D7FBEE /* AppDelegate.swift */,
-				91A08BC02205E2F300D7FBEE /* ViewController.swift */,
 				91A08BC22205E2F300D7FBEE /* Main.storyboard */,
+				91A08BD22205E46700D7FBEE /* FavoritesViewController.swift */,
+				91A08BC02205E2F300D7FBEE /* BrowseViewController.swift */,
+				91A08BD02205E3F100D7FBEE /* SearchViewController.swift */,
+				91A08BBE2205E2F300D7FBEE /* AppDelegate.swift */,
 				91A08BC52205E2F600D7FBEE /* Assets.xcassets */,
 				91A08BC72205E2F600D7FBEE /* LaunchScreen.storyboard */,
 				91A08BCA2205E2F600D7FBEE /* Info.plist */,
@@ -135,7 +141,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				91A08BC12205E2F300D7FBEE /* ViewController.swift in Sources */,
+				91A08BD12205E3F100D7FBEE /* SearchViewController.swift in Sources */,
+				91A08BC12205E2F300D7FBEE /* BrowseViewController.swift in Sources */,
+				91A08BD32205E46700D7FBEE /* FavoritesViewController.swift in Sources */,
 				91A08BBF2205E2F300D7FBEE /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
