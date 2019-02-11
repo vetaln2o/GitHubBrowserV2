@@ -1,0 +1,6 @@
+framework module Pods_GitHubBrowserV2 {
+  umbrella header "Pods-GitHubBrowserV2-umbrella.h"
+
+  export *
+  module * { export * }
+}

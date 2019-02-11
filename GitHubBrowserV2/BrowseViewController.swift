@@ -43,6 +43,14 @@ class BrowseViewController: UIViewController, UITableViewDelegate, UITableViewDa
             }
         }
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ShowDetail" {
+            if let detailVC = segue.destination as? DetailViewController {
+                detailVC.gitRepository = gitDataArray[contentTableView.indexPathForSelectedRow?.row ?? 0]
+            }
+        }
+    }
 
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -91,6 +99,10 @@ class BrowseViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 }
             }
         }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.performSegue(withIdentifier: "ShowDetail", sender: nil)
     }
 
 }

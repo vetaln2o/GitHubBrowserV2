@@ -29,6 +29,14 @@ class FavoritesViewController: UIViewController, UITableViewDelegate, UITableVie
         contentTable.reloadData()
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ShowDetail" {
+            if let detailVC = segue.destination as? DetailViewController {
+                detailVC.gitRepository = favoritesArray[contentTable.indexPathForSelectedRow?.row ?? 0]
+            }
+        }
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return favoritesArray.count
     }
@@ -46,10 +54,14 @@ class FavoritesViewController: UIViewController, UITableViewDelegate, UITableVie
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            FavoritesDB.shared.deleteFromFavorites(favoritesArray[indexPath.row])
+            FavoritesDB.shared.deleteFromFavorites(indexPath.row)
             favoritesArray.remove(at: indexPath.row)
             contentTable.reloadData()
         }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.performSegue(withIdentifier: "ShowDetail", sender: nil)
     }
 
 }

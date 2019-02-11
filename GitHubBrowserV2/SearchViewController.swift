@@ -32,6 +32,14 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         tableLoadIndicator.hidesWhenStopped = true
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ShowDetail" {
+            if let detailVC = segue.destination as? DetailViewController {
+                detailVC.gitRepository = gitDataArray[contentTableView.indexPathForSelectedRow?.row ?? 0]
+            }
+        }
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return gitDataArray.count
     }
@@ -69,7 +77,10 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         searchBar.resignFirstResponder()
-        
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.performSegue(withIdentifier: "ShowDetail", sender: nil)
     }
 
 }

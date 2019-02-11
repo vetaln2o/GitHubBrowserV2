@@ -71,8 +71,9 @@ class FavoritesDB {
         }
     }
     
-    func deleteFromFavorites(_ repository: GitData) {
-        let deletedRepo = getDBObject(from: repository)
+    func deleteFromFavorites(_ repositoryIndex: Int) {
+        let favoritesFromDB = uiRealm.objects(Repository.self)
+        let deletedRepo = favoritesFromDB[repositoryIndex]
         try! uiRealm.write {
             uiRealm.delete(deletedRepo)
         }
