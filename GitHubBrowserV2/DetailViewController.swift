@@ -11,7 +11,7 @@ import SafariServices
 import Down
 import Alamofire
 
-class DetailViewController: UIViewController {
+class DetailViewController: UIViewController, SFSafariViewControllerDelegate {
     @IBOutlet weak var detailTextView: UITextView!
     @IBOutlet weak var favoritesButton: UIButton!
     @IBOutlet weak var titleTextField: UITextField!
@@ -52,6 +52,11 @@ class DetailViewController: UIViewController {
         detailTextView.isHidden = true
         loadIndicator.hidesWhenStopped = true
         loadIndicator.startAnimating()
+       
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
         getStringFromMD { (readme) in
             DispatchQueue.main.async {
@@ -67,10 +72,11 @@ class DetailViewController: UIViewController {
     @IBAction func openInSafari(_ sender: Any? = nil) {
         guard let url = URL(string: gitRepository?.htmlUrl ?? "") else { return }
         let svc = SFSafariViewController(url: url)
+        svc.delegate = self
         present(svc, animated: true, completion: nil)
     }
     
-    @IBAction func goBack(_ sender: Any) {
+    @IBAction func goBack(_ sender: Any? = nil) {
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -82,10 +88,15 @@ class DetailViewController: UIViewController {
                     switch readmeContext.result {
                     case .success(let readme):
                         if readmeContext.response?.statusCode != 404 {
-                            completion(readme)
                             isReadmeExist.append(true)
+                            completion(readme)
                         } else {
                             isReadmeExist.append(false)
+                        }
+                        if isReadmeExist.count == self.readmeUrlVariantArray.count {
+                            if !isReadmeExist.contains(true) {
+                                self.showNotExtistAlert()
+                            }
                         }
                     case .failure(let error):
                         print(error)
@@ -93,16 +104,13 @@ class DetailViewController: UIViewController {
                 }
             }
         }
-        if !isReadmeExist.contains(true) {
-            showNotExtistAlert()
-        }
+
     }
     
     private func showNotExtistAlert() {
         self.notExistAlert = UIAlertController(title: "README", message: "Readme file not exist in \((self.gitRepository?.fullName)!). Open Repository in Safari?", preferredStyle: .alert)
         self.notExistAlertAction = UIAlertAction(title: "Yes", style: .default, handler: { (alert) in
             self.openInSafari()
-            self.dismiss(animated: true, completion: nil)
         })
         self.notExistAlert.addAction(self.notExistAlertAction)
         self.notExistAlertAction = UIAlertAction(title: "No", style: .default, handler: { (alert) in
@@ -110,6 +118,10 @@ class DetailViewController: UIViewController {
         })
         self.notExistAlert.addAction(self.notExistAlertAction)
         self.present(self.notExistAlert, animated: true)
+    }
+    
+    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+        goBack()
     }
     
 }
