@@ -12,6 +12,7 @@ import Alamofire
 struct GitData {
     var id: Int = 0
     var htmlUrl: String = ""
+    var url: String = ""
     var fullName: String = ""
     var description: String?
     var updatedAt: String?
@@ -41,15 +42,20 @@ struct GitData {
     }
     
     init (json: [String : Any]) {
-        self.id = json["id"] as! Int
-        self.htmlUrl = json["html_url"] as! String
-        self.fullName = json["full_name"] as! String
+        self.id = (json["id"] as? Int) ?? 0
+        self.htmlUrl = (json["html_url"] as? String) ?? ""
+        self.url = (json["url"] as? String) ?? ""
+        self.fullName = (json["full_name"] as? String) ?? ""
         self.description = json["description"] as? String
         self.updatedAt = json["updated_at"] as? String
         self.language = json["language"] as? String
         self.stargazersCount = json["stargazers_count"] as? Int
         self.forksCount = json["forks_count"] as? Int
-        self.owner = Owner(json: json["owner"] as! Dictionary<String,Any>)
+        if let owner = json["owner"] as? Dictionary<String,Any> {
+            self.owner = Owner(json: owner)
+        } else {
+            self.owner = Owner()
+        }
     }
     
     init (id: Int, htmlUrl: String, fullName: String, description: String?,
@@ -69,10 +75,16 @@ struct GitData {
     enum TypeOfAction {
         case search
         case browse
+        case loadMore
     }
     
     func getRepoList(from url: String, with type: TypeOfAction, completion: @escaping ([GitData]) -> Void) {
-        request(url).responseJSON { (responseJSON) in
+        var headers = HTTPHeaders()
+        headers["Authorization"] = "token a1cd00bc0bdf6ea2eaa27336dcc79947e9d5d505"
+        if type == .search {
+            headers["Accept"] = "pplication/vnd.github.v3.text-match+json"
+        }
+        request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON { (responseJSON) in
             switch responseJSON.result {
             case .success(let value):
                 var gitDataArray: [GitData] = []
@@ -92,10 +104,28 @@ struct GitData {
                         gitDataArray.append(git)
                     }
                     completion(gitDataArray)
+                case .loadMore:
+                    guard let jsonObject = value as? [String : Any] else { return }
+                    let git = GitData(json: jsonObject)
+                    completion([git])
                 }
 
             case .failure(let error):
                 print(error)
+            }
+        }
+    }
+    
+    func loadMoreInfo(for gitArray: [GitData], completion: @escaping ([GitData])->Void) {
+        var fullGitArray = [GitData]()
+        for (index, git) in gitArray.enumerated() {
+            if git.updatedAt == nil {
+                git.getRepoList(from: git.url, with: .loadMore) { (newGit) in
+                    fullGitArray.append(newGit[0])
+                    if index == gitArray.count - 1 {
+                        completion(fullGitArray)
+                    }
+                }
             }
         }
     }

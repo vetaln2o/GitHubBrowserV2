@@ -35,15 +35,17 @@ class BrowseViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tableLoadIndicator.startAnimating()
         contentTableView.isHidden = true
         gitData.getRepoList(from: "https://api.github.com/repositories?since=1&per_page=100", with: .browse) { (data) in
-            DispatchQueue.main.async { [weak self] in
-                self?.gitDataArray = data
-                self?.contentTableView.reloadData()
-                self?.tableLoadIndicator.stopAnimating()
-                self?.contentTableView.isHidden = false
-            }
+            self.gitData.loadMoreInfo(for: data, completion: { (fullGitInfo) in
+                DispatchQueue.main.async { [weak self] in
+                    self?.gitDataArray = fullGitInfo
+                    self?.contentTableView.reloadData()
+                    self?.tableLoadIndicator.stopAnimating()
+                    self?.contentTableView.isHidden = false
+                }
+            })
         }
         
-        try! FileManager.default.removeItem(at: Realm.Configuration.defaultConfiguration.fileURL!)
+//        try! FileManager.default.removeItem(at: Realm.Configuration.defaultConfiguration.fileURL!)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -61,9 +63,7 @@ class BrowseViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = contentTableView.dequeueReusableCell(withIdentifier: "ContentCell") as! RepositoryInfoTableViewCell
-        if !gitDataArray.isEmpty {
-            cell.pushInfoToCell(from: gitDataArray[indexPath.row])
-        }
+        cell.pushInfoToCell(from: gitDataArray[indexPath.row])
         return cell
     }
     
@@ -92,13 +92,16 @@ class BrowseViewController: UIViewController, UITableViewDelegate, UITableViewDa
     private func loadMoreRepositories() {
         if let lastRepositoryID = gitDataArray.last?.id {
             gitData.getRepoList(from: "https://api.github.com/repositories?since=\(lastRepositoryID)&per_page=100", with: .browse) { (data) in
-                DispatchQueue.main.async { [weak self] in
-                    self?.gitDataArray += data
-                    self?.contentTableView.reloadData()
-                    self?.contentTableView.isScrollEnabled = true
-                    self?.loadMoreIndicator.stopAnimating()
-                    self?.footerView.isHidden = true
-                }
+                self.gitData.loadMoreInfo(for: data, completion: { (fullGitDataArray) in
+                    DispatchQueue.main.async { [weak self] in
+                        self?.gitDataArray += fullGitDataArray
+                        self?.contentTableView.reloadData()
+                        self?.contentTableView.isScrollEnabled = true
+                        self?.loadMoreIndicator.stopAnimating()
+                        self?.footerView.isHidden = true
+                    }
+                })
+                
             }
         }
     }

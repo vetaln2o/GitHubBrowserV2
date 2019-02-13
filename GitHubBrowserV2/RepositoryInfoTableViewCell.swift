@@ -58,6 +58,8 @@ class RepositoryInfoTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    var imageLoadingInProgress = 0
+    
     func pushInfoToCell(from repository: GitData) {
         cellRepoInfo = repository
         self.repositoryNameLable.text = repository.fullName
@@ -72,9 +74,17 @@ class RepositoryInfoTableViewCell: UITableViewCell {
         if let forks = repository.forksCount {
             self.forksLabel.text = "\(forks) forks"
         }
+        self.avatarImageView.image = UIImage()
+        imageLoadingInProgress += 1
+        print(imageLoadingInProgress)
         takeImage(from: repository.owner.avatarUrl) { (image) in
-            DispatchQueue.main.async {
-                self.avatarImageView.image = image
+            if self.imageLoadingInProgress == 1 {
+                DispatchQueue.main.async {
+                    self.avatarImageView.image = image
+                    self.imageLoadingInProgress -= 1
+                }
+            } else {
+                self.imageLoadingInProgress -= 1
             }
         }
     }
