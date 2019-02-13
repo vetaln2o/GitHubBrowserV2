@@ -41,6 +41,14 @@ class DetailViewController: UIViewController, SFSafariViewControllerDelegate {
             newReadmeArray.append(basicReadmeUrl + ".txt")
             newReadmeArray.append(basicReadmeUrl + ".rst")
             newReadmeArray.append(basicReadmeUrl + ".rdoc")
+            basicReadmeUrl = "https://raw.githubusercontent.com/\(currentRepository.fullName)/master/Readme"
+            newReadmeArray.append(basicReadmeUrl)
+            newReadmeArray.append(basicReadmeUrl + ".md")
+            newReadmeArray.append(basicReadmeUrl + ".markdown")
+            newReadmeArray.append(basicReadmeUrl + ".html")
+            newReadmeArray.append(basicReadmeUrl + ".txt")
+            newReadmeArray.append(basicReadmeUrl + ".rst")
+            newReadmeArray.append(basicReadmeUrl + ".rdoc")
         }
         return newReadmeArray
     }

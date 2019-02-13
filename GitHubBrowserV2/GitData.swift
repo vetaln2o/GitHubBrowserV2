@@ -80,7 +80,7 @@ struct GitData {
     
     func getRepoList(from url: String, with type: TypeOfAction, completion: @escaping ([GitData]) -> Void) {
         var headers = HTTPHeaders()
-        headers["Authorization"] = "token a1cd00bc0bdf6ea2eaa27336dcc79947e9d5d505"
+        headers["Authorization"] = "token cbe072a1b995ab28b49ddb45fe0c5271b24908a6"
         if type == .search {
             headers["Accept"] = "pplication/vnd.github.v3.text-match+json"
         }
