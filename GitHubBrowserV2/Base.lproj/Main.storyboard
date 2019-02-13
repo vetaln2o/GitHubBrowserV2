@@ -88,11 +88,22 @@
                                 </items>
                             </navigationBar>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LK1-1A-VWF">
-                                <rect key="frame" x="152.5" y="832" width="109" height="30"/>
+                                <rect key="frame" x="129" y="826" width="149" height="36"/>
+                                <color key="backgroundColor" red="0.76654929663850857" green="0.76654929663850857" blue="0.76654929663850857" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="70" id="RJa-Us-yyW"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                 <state key="normal" title="Add to favorites"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="10"/>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="processFavorites:" destination="bbQ-hT-WLq" eventType="touchUpInside" id="yce-fe-Sln"/>
+                                </connections>
                             </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YAA-8w-WcB">
-                                <rect key="frame" x="0.0" y="88" width="414" height="744"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="738"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -100,7 +111,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="LK1-1A-VWF" firstAttribute="centerX" secondItem="tuW-F7-nE2" secondAttribute="centerX" id="2iB-Qh-3RT"/>
+                            <constraint firstItem="LK1-1A-VWF" firstAttribute="centerX" secondItem="tuW-F7-nE2" secondAttribute="centerX" constant="-3.5" id="2iB-Qh-3RT"/>
                             <constraint firstItem="YAA-8w-WcB" firstAttribute="leading" secondItem="QZx-Ky-VeR" secondAttribute="leading" id="RrP-h0-m7Q"/>
                             <constraint firstItem="mkh-Eh-F5N" firstAttribute="leading" secondItem="QZx-Ky-VeR" secondAttribute="leading" id="T2g-6T-ku3"/>
                             <constraint firstItem="QZx-Ky-VeR" firstAttribute="trailing" secondItem="YAA-8w-WcB" secondAttribute="trailing" id="Tlg-rM-gWx"/>
@@ -120,7 +131,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8FQ-td-6bZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="370" y="766"/>
+            <point key="canvasLocation" x="369.56521739130437" y="765.40178571428567"/>
         </scene>
         <!--Search View Controller-->
         <scene sceneID="JIC-5O-dRQ">

@@ -78,4 +78,28 @@ class FavoritesDB {
             uiRealm.delete(deletedRepo)
         }
     }
+    
+    func deleteFromFavoritesWith(_ repositoryId: Int) {
+        let favoritesFromDB = uiRealm.objects(Repository.self)
+        var deletedRepo = [Repository]()
+        for repo in favoritesFromDB {
+            if repo.id == repositoryId {
+                deletedRepo.append(repo)
+                break
+            }
+        }
+        try! uiRealm.write {
+            uiRealm.delete(deletedRepo[0])
+        }
+    }
+    
+    func checkExistRepository(with repoID: Int) -> Bool {
+        let favoritesFromDB = uiRealm.objects(Repository.self)
+        for repo in favoritesFromDB {
+            if repo.id == repoID {
+                return true
+            }
+        }
+        return false
+    }
 }

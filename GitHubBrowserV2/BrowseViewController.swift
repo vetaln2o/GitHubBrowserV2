@@ -42,6 +42,8 @@ class BrowseViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 self?.contentTableView.isHidden = false
             }
         }
+        
+        try! FileManager.default.removeItem(at: Realm.Configuration.defaultConfiguration.fileURL!)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

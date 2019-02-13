@@ -29,6 +29,7 @@ class DetailViewController: UIViewController, SFSafariViewControllerDelegate {
             newReadmeArray.append(basicReadmeUrl)
             newReadmeArray.append(basicReadmeUrl + ".md")
             newReadmeArray.append(basicReadmeUrl + ".markdown")
+            newReadmeArray.append(basicReadmeUrl + ".html")
             newReadmeArray.append(basicReadmeUrl + ".txt")
             newReadmeArray.append(basicReadmeUrl + ".rst")
             newReadmeArray.append(basicReadmeUrl + ".rdoc")
@@ -36,6 +37,7 @@ class DetailViewController: UIViewController, SFSafariViewControllerDelegate {
             newReadmeArray.append(basicReadmeUrl)
             newReadmeArray.append(basicReadmeUrl + ".md")
             newReadmeArray.append(basicReadmeUrl + ".markdown")
+            newReadmeArray.append(basicReadmeUrl + ".html")
             newReadmeArray.append(basicReadmeUrl + ".txt")
             newReadmeArray.append(basicReadmeUrl + ".rst")
             newReadmeArray.append(basicReadmeUrl + ".rdoc")
@@ -52,7 +54,7 @@ class DetailViewController: UIViewController, SFSafariViewControllerDelegate {
         detailTextView.isHidden = true
         loadIndicator.hidesWhenStopped = true
         loadIndicator.startAnimating()
-       
+        favoritesButton.isHidden = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -67,6 +69,9 @@ class DetailViewController: UIViewController, SFSafariViewControllerDelegate {
                 self.detailTextView.isHidden = false
             }
         }
+        
+        updateButtonForFavoritesProcessing()
+        favoritesButton.isHidden = false
     }
 
     @IBAction func openInSafari(_ sender: Any? = nil) {
@@ -78,6 +83,36 @@ class DetailViewController: UIViewController, SFSafariViewControllerDelegate {
     
     @IBAction func goBack(_ sender: Any? = nil) {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func processFavorites(_ sender: UIButton) {
+        if let repo = gitRepository {
+            if sender.tag == 1 {
+                FavoritesDB.shared.saveToFavorites(from: repo)
+                print("Repo Saved to favorites")
+                updateButtonForFavoritesProcessing()
+            } else if sender.tag == 2 {
+                FavoritesDB.shared.deleteFromFavoritesWith(repo.id)
+                print("Repo deleted form favorites")
+                updateButtonForFavoritesProcessing()
+            }
+        }
+    }
+    
+    private func updateButtonForFavoritesProcessing() {
+        if let repo = gitRepository {
+            if FavoritesDB.shared.checkExistRepository(with: repo.id) {
+                favoritesButton.setTitle("Delete from favorites", for: .normal)
+                favoritesButton.setTitleColor(.red, for: .normal)
+                favoritesButton.tag = 2
+                print("Label changed to delet from")
+            } else {
+                favoritesButton.setTitle("Add to favorites", for: .normal)
+                favoritesButton.setTitleColor(.green, for: .normal)
+                favoritesButton.tag = 1
+                print("Label changed to add to")
+            }
+        }
     }
     
     private func getStringFromMD(_ completion: @escaping (String) -> Void) {
