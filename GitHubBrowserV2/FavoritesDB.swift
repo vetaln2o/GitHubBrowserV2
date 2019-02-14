@@ -12,7 +12,9 @@ import RealmSwift
 class Repository: Object {
     @objc dynamic var id: Int = 0
     @objc dynamic var htmlUrl: String = ""
+    @objc dynamic var url: String = ""
     @objc dynamic var fullName: String = ""
+    @objc dynamic var fullNameRepo: String = ""
     @objc dynamic var repDescription: String?
     @objc dynamic var updatedAt: String?
     @objc dynamic var language: String?
@@ -34,8 +36,8 @@ class FavoritesDB {
         var favoritesArray = [GitData]()
         let favoritesFromDB = uiRealm.objects(Repository.self)
         for element in favoritesFromDB {
-            favoritesArray.append(GitData(id: element.id, htmlUrl: element.htmlUrl,
-                                          fullName: element.fullName, description: element.repDescription,
+            favoritesArray.append(GitData(id: element.id, htmlUrl: element.htmlUrl, url: element.url,
+                                          fullName: element.fullName, fullNameRepo: element.fullNameRepo, description: element.repDescription,
                                           updatedAt: element.updatedAt, language: element.language,
                                           stargazersCount: element.stargazersCount.value, forksCount: element.forksCount.value,
                                           avatarUrl: element.owner?.avatarUrl ?? ""))
@@ -54,7 +56,9 @@ class FavoritesDB {
         let newRepo = Repository()
         newRepo.id = repository.id
         newRepo.htmlUrl = repository.htmlUrl
+        newRepo.url = repository.url
         newRepo.fullName = repository.fullName
+        newRepo.fullNameRepo = repository.fullNameRepo
         newRepo.repDescription = repository.description
         newRepo.updatedAt = repository.updatedAt
         newRepo.language = repository.language

@@ -8,9 +8,13 @@
 
 import UIKit
 
-class FavoritesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class FavoritesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIPickerViewDataSource, UIPickerViewDelegate {
     
     @IBOutlet weak var contentTable: UITableView!
+    @IBOutlet weak var sortingPicker: UIPickerView!
+    @IBOutlet weak var sortingPickerHeight: NSLayoutConstraint!
+    @IBOutlet weak var sortButton: UIBarButtonItem!
+    @IBOutlet weak var saveSortButton: UIBarButtonItem!
     
     var favoritesArray = [GitData]()
     
@@ -19,7 +23,12 @@ class FavoritesViewController: UIViewController, UITableViewDelegate, UITableVie
         contentTable.delegate = self
         contentTable.dataSource = self
         contentTable.register(RepositoryInfoTableViewCell.self, forCellReuseIdentifier: "ContentCell")
-
+        
+        sortingPickerHeight.constant = 0
+        saveSortButton.isEnabled = false
+        
+        sortingPicker.delegate = self
+        sortingPicker.dataSource = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -75,6 +84,40 @@ class FavoritesViewController: UIViewController, UITableViewDelegate, UITableVie
         alert.addAction(alertActionClean)
         alert.addAction(alertActionCancel)
         self.present(alert, animated: true)
+    }
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 2
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return 2
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        switch (component, row) {
+        case (0,0): return "by name"
+        case (0,1): return "by date"
+        case (1,0): return "A-Z;0-9"
+        case (1,1): return "Z-A;9-0"
+        default: return ""
+        }
+    }
+    
+    @IBAction func sortButtonAction(_ sender: Any) {
+        sortingPickerHeight.constant = 120
+        saveSortButton.isEnabled = true
+        sortButton.isEnabled = false
+        contentTable.alpha = 0.3
+        contentTable.isUserInteractionEnabled = false
+    }
+    
+    @IBAction func saveSortButtonAction(_ sender: Any) {
+        sortingPickerHeight.constant = 0
+        saveSortButton.isEnabled = false
+        sortButton.isEnabled = true
+        contentTable.alpha = 1.0
+        contentTable.isUserInteractionEnabled = true
     }
     
 }

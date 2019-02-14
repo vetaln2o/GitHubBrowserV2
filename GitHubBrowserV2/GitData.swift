@@ -100,12 +100,14 @@ struct GitData {
         }
     }
     
-    init (id: Int, htmlUrl: String, fullName: String, description: String?,
+    init (id: Int, htmlUrl: String, url: String, fullName: String, fullNameRepo: String, description: String?,
           updatedAt: String?, language: String?, stargazersCount: Int?,
           forksCount: Int?, avatarUrl: String) {
         self.id = id
         self.htmlUrl = htmlUrl
+        self.url = url
         self.fullName = fullName
+        self.fullNameRepo = fullNameRepo
         self.description = description
         self.updatedAt = updatedAt
         self.language = language

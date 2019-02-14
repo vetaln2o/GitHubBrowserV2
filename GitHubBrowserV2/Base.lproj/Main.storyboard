@@ -196,7 +196,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="uye-F8-659">
-                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="605"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ContentCell" id="TDe-Tb-Rvp" customClass="RepositoryInfoTableViewCell" customModule="GitHubBrowserV2" customModuleProvider="target">
@@ -216,6 +216,18 @@
                                 <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                                 <items>
                                     <navigationItem id="Kec-yV-tUa">
+                                        <leftBarButtonItems>
+                                            <barButtonItem title="Sort" id="QOF-Se-TB9">
+                                                <connections>
+                                                    <action selector="sortButtonAction:" destination="u4f-Ij-kCO" id="Eoy-Cz-rz2"/>
+                                                </connections>
+                                            </barButtonItem>
+                                            <barButtonItem style="done" systemItem="save" id="QLq-pr-eq2">
+                                                <connections>
+                                                    <action selector="saveSortButtonAction:" destination="u4f-Ij-kCO" id="vGK-pE-fGP"/>
+                                                </connections>
+                                            </barButtonItem>
+                                        </leftBarButtonItems>
                                         <barButtonItem key="rightBarButtonItem" systemItem="trash" id="C3g-Dh-VbC">
                                             <connections>
                                                 <action selector="clearFavorites:" destination="u4f-Ij-kCO" id="SeL-5h-afd"/>
@@ -224,15 +236,24 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
+                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c7O-Z1-wL4">
+                                <rect key="frame" x="0.0" y="693" width="414" height="120"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="120" id="u1h-qO-ksF"/>
+                                </constraints>
+                            </pickerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="uye-F8-659" firstAttribute="leading" secondItem="1PI-gJ-f0f" secondAttribute="leading" id="6gD-Hi-psu"/>
+                            <constraint firstItem="c7O-Z1-wL4" firstAttribute="leading" secondItem="1PI-gJ-f0f" secondAttribute="leading" id="A9D-Hx-TJH"/>
                             <constraint firstItem="sGd-go-67E" firstAttribute="leading" secondItem="1PI-gJ-f0f" secondAttribute="leading" id="EDT-HP-9Xe"/>
                             <constraint firstItem="1PI-gJ-f0f" firstAttribute="trailing" secondItem="uye-F8-659" secondAttribute="trailing" id="EbC-fK-3uh"/>
                             <constraint firstItem="uye-F8-659" firstAttribute="top" secondItem="sGd-go-67E" secondAttribute="bottom" id="Hxk-Kn-cqd"/>
+                            <constraint firstItem="c7O-Z1-wL4" firstAttribute="top" secondItem="uye-F8-659" secondAttribute="bottom" id="KVp-uj-hLw"/>
+                            <constraint firstItem="c7O-Z1-wL4" firstAttribute="trailing" secondItem="1PI-gJ-f0f" secondAttribute="trailing" id="PNb-ft-WKs"/>
                             <constraint firstItem="sGd-go-67E" firstAttribute="top" secondItem="1PI-gJ-f0f" secondAttribute="top" id="XfC-z1-qdc"/>
-                            <constraint firstItem="1PI-gJ-f0f" firstAttribute="bottom" secondItem="uye-F8-659" secondAttribute="bottom" id="ge7-PY-KVW"/>
+                            <constraint firstItem="c7O-Z1-wL4" firstAttribute="bottom" secondItem="1PI-gJ-f0f" secondAttribute="bottom" id="mrN-vU-lrI"/>
                             <constraint firstItem="sGd-go-67E" firstAttribute="trailing" secondItem="1PI-gJ-f0f" secondAttribute="trailing" id="pIU-oS-3A6"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="1PI-gJ-f0f"/>
@@ -240,6 +261,10 @@
                     <tabBarItem key="tabBarItem" systemItem="favorites" id="7oW-me-LQm"/>
                     <connections>
                         <outlet property="contentTable" destination="uye-F8-659" id="m5e-Zv-oa5"/>
+                        <outlet property="saveSortButton" destination="QLq-pr-eq2" id="vuw-rF-9b4"/>
+                        <outlet property="sortButton" destination="QOF-Se-TB9" id="gSJ-kW-Tgo"/>
+                        <outlet property="sortingPicker" destination="c7O-Z1-wL4" id="NXc-1q-TTt"/>
+                        <outlet property="sortingPickerHeight" destination="u1h-qO-ksF" id="5fN-ed-mWj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PvM-9a-34F" userLabel="First Responder" sceneMemberID="firstResponder"/>

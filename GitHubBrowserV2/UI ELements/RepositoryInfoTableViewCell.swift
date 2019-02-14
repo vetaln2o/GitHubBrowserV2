@@ -20,7 +20,7 @@ class RepositoryInfoTableViewCell: UITableViewCell {
     var updateDataLabel = UILabel()
     var forksLabel = UILabel()
     
-    var cellRepoInfo = GitData(id: 0, htmlUrl: "", fullName: "", description: nil, updatedAt: nil, language: nil, stargazersCount: nil, forksCount: nil, avatarUrl: "")
+    var cellRepoInfo = GitData(id: 0, htmlUrl: "", url: "", fullName: "", fullNameRepo: "", description: nil, updatedAt: nil, language: nil, stargazersCount: nil, forksCount: nil, avatarUrl: "")
     
     var processAddingToFavoritesDelegate: NewFavoritesAddedDelegate?
     
