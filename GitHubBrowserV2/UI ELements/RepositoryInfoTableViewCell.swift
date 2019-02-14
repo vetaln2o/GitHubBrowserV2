@@ -22,6 +22,8 @@ class RepositoryInfoTableViewCell: UITableViewCell {
     
     var cellRepoInfo = GitData(id: 0, htmlUrl: "", fullName: "", description: nil, updatedAt: nil, language: nil, stargazersCount: nil, forksCount: nil, avatarUrl: "")
     
+    var processAddingToFavoritesDelegate: NewFavoritesAddedDelegate?
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -119,6 +121,7 @@ class RepositoryInfoTableViewCell: UITableViewCell {
         }) {
             FavoritesDB.shared.saveToFavorites(from: cellRepoInfo)
         }
+        processAddingToFavoritesDelegate?.processAddingToFavorites(repository: cellRepoInfo)
     }
     
     private func addCounstraints() {

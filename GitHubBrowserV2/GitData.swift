@@ -173,3 +173,7 @@ struct GitData {
     }
     
 }
+
+protocol NewFavoritesAddedDelegate {
+    func processAddingToFavorites(repository: GitData)
+}

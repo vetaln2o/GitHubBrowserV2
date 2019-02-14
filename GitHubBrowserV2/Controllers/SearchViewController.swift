@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
+class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, NewFavoritesAddedDelegate {
     
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var contentTableView: UITableView!
@@ -17,6 +17,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     var tableLoadIndicator = UIActivityIndicatorView(style: .gray)
     
     var footerView = UIView()
+    var messageForAddingToFavorites = MessageLabel()
     
     var gitData = GitData()
     var gitDataArray = [GitData]()
@@ -28,6 +29,9 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         contentTableView.delegate = self
         contentTableView.dataSource = self
         contentTableView.register(RepositoryInfoTableViewCell.self, forCellReuseIdentifier: "ContentCell")
+        
+        messageForAddingToFavorites = MessageLabel(frame: CGRect(x: view.frame.minX+15, y: view.frame.maxY - 150, width: view.frame.width - 30, height: 30))
+        view.addSubview(messageForAddingToFavorites)
 
         searchBar.becomeFirstResponder()
         tableLoadIndicator.center = view.center
@@ -50,6 +54,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = contentTableView.dequeueReusableCell(withIdentifier: "ContentCell") as! RepositoryInfoTableViewCell
         cell.pushInfoToCell(from: gitDataArray[indexPath.row], is: true)
+        cell.processAddingToFavoritesDelegate = self
         return cell
     }
     
@@ -123,5 +128,10 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
             }
         }
     }
+    
+    func processAddingToFavorites(repository: GitData) {
+        messageForAddingToFavorites.showWindow(with: "'\(repository.fullNameRepo)' was added to favorites!")
+    }
+
 
 }

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4425108D22117C1C00B9AF9B /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4425108C22117C1C00B9AF9B /* DetailViewController.swift */; };
+		44C1A0AF2215BC9E00956FF2 /* MessageLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C1A0AE2215BC9E00956FF2 /* MessageLabel.swift */; };
 		612E56107EC047D8630D44CE /* Pods_GitHubBrowserV2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F14F40AE46246D4E431D8D6 /* Pods_GitHubBrowserV2.framework */; };
 		910F0771220C612800E96FFE /* FavoritesDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910F0770220C612800E96FFE /* FavoritesDB.swift */; };
 		91A08BBF2205E2F300D7FBEE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A08BBE2205E2F300D7FBEE /* AppDelegate.swift */; };
@@ -24,6 +25,7 @@
 /* Begin PBXFileReference section */
 		09FBD866B3D3EAB336ED7768 /* Pods-GitHubBrowserV2.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GitHubBrowserV2.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GitHubBrowserV2/Pods-GitHubBrowserV2.debug.xcconfig"; sourceTree = "<group>"; };
 		4425108C22117C1C00B9AF9B /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		44C1A0AE2215BC9E00956FF2 /* MessageLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageLabel.swift; sourceTree = "<group>"; };
 		4CC91AD8A68646C5293699C3 /* Pods-GitHubBrowserV2.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GitHubBrowserV2.release.xcconfig"; path = "Pods/Target Support Files/Pods-GitHubBrowserV2/Pods-GitHubBrowserV2.release.xcconfig"; sourceTree = "<group>"; };
 		910F0770220C612800E96FFE /* FavoritesDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesDB.swift; sourceTree = "<group>"; };
 		91A08BBB2205E2F300D7FBEE /* GitHubBrowserV2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitHubBrowserV2.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -52,6 +54,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		44C1A0B02215BCB600956FF2 /* UI ELements */ = {
+			isa = PBXGroup;
+			children = (
+				91A08BD422062E1D00D7FBEE /* RepositoryInfoTableViewCell.swift */,
+				44C1A0AE2215BC9E00956FF2 /* MessageLabel.swift */,
+			);
+			path = "UI ELements";
+			sourceTree = "<group>";
+		};
+		44C1A0B12215BCD300956FF2 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				91A08BC02205E2F300D7FBEE /* BrowseViewController.swift */,
+				91A08BD02205E3F100D7FBEE /* SearchViewController.swift */,
+				91A08BD22205E46700D7FBEE /* FavoritesViewController.swift */,
+				4425108C22117C1C00B9AF9B /* DetailViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		91A08BB22205E2F300D7FBEE = {
 			isa = PBXGroup;
 			children = (
@@ -75,12 +97,9 @@
 			children = (
 				91A08BC22205E2F300D7FBEE /* Main.storyboard */,
 				91A08BD62206329400D7FBEE /* GitData.swift */,
-				91A08BD422062E1D00D7FBEE /* RepositoryInfoTableViewCell.swift */,
-				91A08BC02205E2F300D7FBEE /* BrowseViewController.swift */,
-				91A08BD02205E3F100D7FBEE /* SearchViewController.swift */,
 				910F0770220C612800E96FFE /* FavoritesDB.swift */,
-				91A08BD22205E46700D7FBEE /* FavoritesViewController.swift */,
-				4425108C22117C1C00B9AF9B /* DetailViewController.swift */,
+				44C1A0B12215BCD300956FF2 /* Controllers */,
+				44C1A0B02215BCB600956FF2 /* UI ELements */,
 				91A08BBE2205E2F300D7FBEE /* AppDelegate.swift */,
 				91A08BC52205E2F600D7FBEE /* Assets.xcassets */,
 				91A08BC72205E2F600D7FBEE /* LaunchScreen.storyboard */,
@@ -239,6 +258,7 @@
 				91A08BD522062E1D00D7FBEE /* RepositoryInfoTableViewCell.swift in Sources */,
 				91A08BD32205E46700D7FBEE /* FavoritesViewController.swift in Sources */,
 				91A08BBF2205E2F300D7FBEE /* AppDelegate.swift in Sources */,
+				44C1A0AF2215BC9E00956FF2 /* MessageLabel.swift in Sources */,
 				4425108D22117C1C00B9AF9B /* DetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

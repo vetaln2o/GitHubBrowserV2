@@ -9,12 +9,14 @@
 import UIKit
 import RealmSwift
 
-class BrowseViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-
+class BrowseViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, NewFavoritesAddedDelegate {
+    
     @IBOutlet weak var contentTableView: UITableView!
     var loadMoreIndicator = UIActivityIndicatorView(style: .white)
     var tableLoadIndicator = UIActivityIndicatorView(style: .gray)
     var footerView = UIView()
+    
+    var messageForAddingToFavorites = MessageLabel()
     
     var gitData = GitData()
     var gitDataArray = [GitData]()
@@ -28,6 +30,9 @@ class BrowseViewController: UIViewController, UITableViewDelegate, UITableViewDa
         contentTableView.tableFooterView?.isHidden = true
         contentTableView.rowHeight = UITableView.automaticDimension
         contentTableView.estimatedRowHeight = 44
+        
+        messageForAddingToFavorites = MessageLabel(frame: CGRect(x: view.frame.minX+15, y: view.frame.maxY - 150, width: view.frame.width - 30, height: 30))
+        view.addSubview(messageForAddingToFavorites)
         
         tableLoadIndicator.center = view.center
         view.addSubview(tableLoadIndicator)
@@ -64,6 +69,7 @@ class BrowseViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = contentTableView.dequeueReusableCell(withIdentifier: "ContentCell") as! RepositoryInfoTableViewCell
         cell.pushInfoToCell(from: gitDataArray[indexPath.row])
+        cell.processAddingToFavoritesDelegate = self
         return cell
     }
     
@@ -108,6 +114,10 @@ class BrowseViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.performSegue(withIdentifier: "ShowDetail", sender: nil)
+    }
+    
+    func processAddingToFavorites(repository: GitData) {
+        messageForAddingToFavorites.showWindow(with: "'\(repository.fullNameRepo)' was added to favorites!")
     }
 
 }
