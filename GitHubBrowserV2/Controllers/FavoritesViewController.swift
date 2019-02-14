@@ -64,4 +64,17 @@ class FavoritesViewController: UIViewController, UITableViewDelegate, UITableVie
         self.performSegue(withIdentifier: "ShowDetail", sender: nil)
     }
     
+    @IBAction func clearFavorites(_ sender: Any) {
+        let alert = UIAlertController(title: "Warning!", message: "Are you sure to clean favorites?", preferredStyle: .alert)
+        let alertActionClean = UIAlertAction(title: "Clean", style: .destructive) { (action) in
+            FavoritesDB.shared.deleteAllRealm()
+            self.favoritesArray.removeAll()
+            self.contentTable.reloadData()
+        }
+        let alertActionCancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alert.addAction(alertActionClean)
+        alert.addAction(alertActionCancel)
+        self.present(alert, animated: true)
+    }
+    
 }
