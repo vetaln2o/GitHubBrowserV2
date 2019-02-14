@@ -49,13 +49,14 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = contentTableView.dequeueReusableCell(withIdentifier: "ContentCell") as! RepositoryInfoTableViewCell
-        cell.pushInfoToCell(from: gitDataArray[indexPath.row])
+        cell.pushInfoToCell(from: gitDataArray[indexPath.row], is: true)
         return cell
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if let searchText = searchBar.text {
             if searchText.count > 2 {
+                repositoryListPage = 1
                 tableLoadIndicator.startAnimating()
                 contentTableView.isHidden = true
                 gitData.getRepoList(
@@ -66,6 +67,9 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
                         self?.contentTableView.reloadData()
                         self?.tableLoadIndicator.stopAnimating()
                         self?.contentTableView.isHidden = false
+//                        for element in (self?.gitDataArray)! {
+//                            print(element.textMatches)
+//                        }
                     }
                 }
             }

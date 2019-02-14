@@ -60,10 +60,17 @@ class RepositoryInfoTableViewCell: UITableViewCell {
     
     var imageLoadingInProgress = 0
     
-    func pushInfoToCell(from repository: GitData) {
+    func pushInfoToCell(from repository: GitData, is forSearch: Bool? = nil) {
         cellRepoInfo = repository
-        self.repositoryNameLable.text = repository.fullName
-        self.repositoryDescriptionTextView.text = repository.description
+        if forSearch == nil {
+            self.repositoryNameLable.text = repository.fullName
+            self.repositoryDescriptionTextView.text = repository.description
+        } else {
+            self.repositoryNameLable.attributedText = highlight(search: repository.fullName, for: "name")
+            if let description = repository.description {
+                self.repositoryDescriptionTextView.attributedText = highlight(search: description, for: "description")
+            }
+        }
         self.languageLabel.text = repository.language
         if var date = repository.updatedAt {
             self.updateDataLabel.text = getUpdateDate(stringData: &date)
@@ -76,7 +83,6 @@ class RepositoryInfoTableViewCell: UITableViewCell {
         }
         self.avatarImageView.image = UIImage()
         imageLoadingInProgress += 1
-        print(imageLoadingInProgress)
         takeImage(from: repository.owner.avatarUrl) { (image) in
             if self.imageLoadingInProgress == 1 {
                 DispatchQueue.main.async {
@@ -87,6 +93,23 @@ class RepositoryInfoTableViewCell: UITableViewCell {
                 self.imageLoadingInProgress -= 1
             }
         }
+    }
+    
+    private func highlight(search text: String, for property: String?) -> NSMutableAttributedString {
+        let highlightedString = NSMutableAttributedString(string: text)
+        if let textMatches = cellRepoInfo.textMatches {
+            for attribute in textMatches {
+                if attribute.property == property {
+                    for rangeInt in attribute.matches! {
+                        if let indices = rangeInt.indices {
+                            let range: NSRange = NSMakeRange(indices[0], indices[1] - indices[0])
+                            highlightedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.red, range: range)
+                        }
+                    }
+                }
+            }
+        }
+        return highlightedString
     }
     
     @objc private func addToFavorites() {

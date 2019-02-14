@@ -20,6 +20,38 @@ struct GitData {
     var stargazersCount: Int?
     var forksCount: Int?
     var owner: Owner = Owner()
+    var textMatches: [TextMatches]?
+    
+    struct TextMatches {
+        var property: String?
+        var matches: [Matches]?
+        
+        init(){
+        }
+        
+        init(json: [String : Any]) {
+            self.property = json["property"] as? String
+            if let matchArray = json["matches"] as? Array<Dictionary<String,Any>> {
+                var newMatchesArray = [Matches]()
+                for item in matchArray {
+                    let newItem = Matches(json: item)
+                    newMatchesArray.append(newItem)
+                }
+                self.matches = newMatchesArray
+            }
+        }
+        
+        struct Matches {
+            var text: String?
+            var indices: [Int]?
+            init() {
+            }
+            init(json: [String : Any]) {
+                self.text = json["text"] as? String
+                self.indices = json["indices"] as? [Int]
+            }
+        }
+    }
     
     struct  Owner {
         var avatarUrl: String = ""
@@ -45,7 +77,7 @@ struct GitData {
         self.id = (json["id"] as? Int) ?? 0
         self.htmlUrl = (json["html_url"] as? String) ?? ""
         self.url = (json["url"] as? String) ?? ""
-        self.fullName = (json["full_name"] as? String) ?? ""
+        self.fullName = (json["name"] as? String) ?? ""
         self.description = json["description"] as? String
         self.updatedAt = json["updated_at"] as? String
         self.language = json["language"] as? String
@@ -55,6 +87,15 @@ struct GitData {
             self.owner = Owner(json: owner)
         } else {
             self.owner = Owner()
+        }
+        if let matchesArray = json["text_matches"] as? Array<Dictionary<String,Any>> {
+            var textMatchesArray = [TextMatches]()
+            for match in matchesArray {
+                let newMatch = TextMatches(json: match)
+                textMatchesArray.append(newMatch)
+            }
+            self.textMatches = textMatchesArray
+            print(textMatchesArray)
         }
     }
     
