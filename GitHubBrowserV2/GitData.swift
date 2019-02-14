@@ -97,7 +97,6 @@ struct GitData {
                 textMatchesArray.append(newMatch)
             }
             self.textMatches = textMatchesArray
-            print(textMatchesArray)
         }
     }
     

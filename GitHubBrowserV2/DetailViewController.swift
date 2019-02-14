@@ -100,11 +100,9 @@ class DetailViewController: UIViewController, SFSafariViewControllerDelegate {
         if let repo = gitRepository {
             if sender.tag == 1 {
                 FavoritesDB.shared.saveToFavorites(from: repo)
-                print("Repo Saved to favorites")
                 updateButtonForFavoritesProcessing()
             } else if sender.tag == 2 {
                 FavoritesDB.shared.deleteFromFavoritesWith(repo.id)
-                print("Repo deleted form favorites")
                 updateButtonForFavoritesProcessing()
             }
         }
@@ -116,12 +114,10 @@ class DetailViewController: UIViewController, SFSafariViewControllerDelegate {
                 favoritesButton.setTitle("Delete from favorites", for: .normal)
                 favoritesButton.setTitleColor(.red, for: .normal)
                 favoritesButton.tag = 2
-                print("Label changed to delet from")
             } else {
                 favoritesButton.setTitle("Add to favorites", for: .normal)
                 favoritesButton.setTitleColor(.green, for: .normal)
                 favoritesButton.tag = 1
-                print("Label changed to add to")
             }
         }
     }
@@ -134,8 +130,6 @@ class DetailViewController: UIViewController, SFSafariViewControllerDelegate {
                     switch readmeContext.result {
                     case .success(let readme):
                         if readmeContext.response?.statusCode != 404 {
-                            print(urlFromString)
-                            print(readme)
                             isReadmeExist.append(true)
                             completion(readme)
                         } else {

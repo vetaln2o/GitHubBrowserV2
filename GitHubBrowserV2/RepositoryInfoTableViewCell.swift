@@ -113,7 +113,6 @@ class RepositoryInfoTableViewCell: UITableViewCell {
     }
     
     @objc private func addToFavorites() {
-        print("Repo added \(cellRepoInfo.id)")
         let currentFavoritesArray = FavoritesDB.shared.getFavoritesRepositories()
         if !currentFavoritesArray.contains(where: { (gitInfo) -> Bool in
             return gitInfo.id == cellRepoInfo.id

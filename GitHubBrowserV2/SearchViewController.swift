@@ -67,9 +67,6 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
                         self?.contentTableView.reloadData()
                         self?.tableLoadIndicator.stopAnimating()
                         self?.contentTableView.isHidden = false
-//                        for element in (self?.gitDataArray)! {
-//                            print(element.textMatches)
-//                        }
                     }
                 }
             }
