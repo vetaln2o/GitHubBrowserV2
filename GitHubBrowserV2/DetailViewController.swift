@@ -25,7 +25,7 @@ class DetailViewController: UIViewController, SFSafariViewControllerDelegate {
     var readmeUrlVariantArray: [String] {
         var newReadmeArray = [String]()
         if let currentRepository = gitRepository {
-            var basicReadmeUrl = "https://raw.githubusercontent.com/\(currentRepository.fullName)/master/README"
+            var basicReadmeUrl = "https://raw.githubusercontent.com/\(currentRepository.fullNameRepo)/master/README"
             newReadmeArray.append(basicReadmeUrl)
             newReadmeArray.append(basicReadmeUrl + ".md")
             newReadmeArray.append(basicReadmeUrl + ".markdown")
@@ -33,7 +33,8 @@ class DetailViewController: UIViewController, SFSafariViewControllerDelegate {
             newReadmeArray.append(basicReadmeUrl + ".txt")
             newReadmeArray.append(basicReadmeUrl + ".rst")
             newReadmeArray.append(basicReadmeUrl + ".rdoc")
-            basicReadmeUrl = "https://raw.githubusercontent.com/\(currentRepository.fullName)/master/readme"
+            newReadmeArray.append(basicReadmeUrl + ".textile")
+            basicReadmeUrl = "https://raw.githubusercontent.com/\(currentRepository.fullNameRepo)/master/readme"
             newReadmeArray.append(basicReadmeUrl)
             newReadmeArray.append(basicReadmeUrl + ".md")
             newReadmeArray.append(basicReadmeUrl + ".markdown")
@@ -41,7 +42,8 @@ class DetailViewController: UIViewController, SFSafariViewControllerDelegate {
             newReadmeArray.append(basicReadmeUrl + ".txt")
             newReadmeArray.append(basicReadmeUrl + ".rst")
             newReadmeArray.append(basicReadmeUrl + ".rdoc")
-            basicReadmeUrl = "https://raw.githubusercontent.com/\(currentRepository.fullName)/master/Readme"
+            newReadmeArray.append(basicReadmeUrl + ".textile")
+            basicReadmeUrl = "https://raw.githubusercontent.com/\(currentRepository.fullNameRepo)/master/Readme"
             newReadmeArray.append(basicReadmeUrl)
             newReadmeArray.append(basicReadmeUrl + ".md")
             newReadmeArray.append(basicReadmeUrl + ".markdown")
@@ -49,6 +51,7 @@ class DetailViewController: UIViewController, SFSafariViewControllerDelegate {
             newReadmeArray.append(basicReadmeUrl + ".txt")
             newReadmeArray.append(basicReadmeUrl + ".rst")
             newReadmeArray.append(basicReadmeUrl + ".rdoc")
+            newReadmeArray.append(basicReadmeUrl + ".textile")
         }
         return newReadmeArray
     }
@@ -131,6 +134,8 @@ class DetailViewController: UIViewController, SFSafariViewControllerDelegate {
                     switch readmeContext.result {
                     case .success(let readme):
                         if readmeContext.response?.statusCode != 404 {
+                            print(urlFromString)
+                            print(readme)
                             isReadmeExist.append(true)
                             completion(readme)
                         } else {

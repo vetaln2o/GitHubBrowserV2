@@ -14,6 +14,7 @@ struct GitData {
     var htmlUrl: String = ""
     var url: String = ""
     var fullName: String = ""
+    var fullNameRepo: String = ""
     var description: String?
     var updatedAt: String?
     var language: String?
@@ -78,6 +79,7 @@ struct GitData {
         self.htmlUrl = (json["html_url"] as? String) ?? ""
         self.url = (json["url"] as? String) ?? ""
         self.fullName = (json["name"] as? String) ?? ""
+        self.fullNameRepo = (json["full_name"] as? String) ?? ""
         self.description = json["description"] as? String
         self.updatedAt = json["updated_at"] as? String
         self.language = json["language"] as? String
