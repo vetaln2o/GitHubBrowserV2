@@ -70,6 +70,7 @@ class BrowseViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let cell = contentTableView.dequeueReusableCell(withIdentifier: "ContentCell") as! RepositoryInfoTableViewCell
         cell.pushInfoToCell(from: gitDataArray[indexPath.row])
         cell.processAddingToFavoritesDelegate = self
+        
         return cell
     }
     
@@ -82,12 +83,15 @@ class BrowseViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return footerView
     }
     
+    var loadingMoreProcess = false
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let currentOffset = scrollView.contentOffset.y
         let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
         let deltaOffset = maximumOffset - currentOffset
         
-        if deltaOffset <= 0 {
+        if deltaOffset <= 0 && loadingMoreProcess == false {
+            loadingMoreProcess = true
             footerView.isHidden = false
             scrollView.isScrollEnabled = false
             loadMoreIndicator.startAnimating()
@@ -98,6 +102,7 @@ class BrowseViewController: UIViewController, UITableViewDelegate, UITableViewDa
     private func loadMoreRepositories() {
         if let lastRepositoryID = gitDataArray.last?.id {
             gitData.getRepoList(from: "https://api.github.com/repositories?since=\(lastRepositoryID)&per_page=100", with: .browse) { (data) in
+                print(data.count)
                 self.gitData.loadMoreInfo(for: data, completion: { (fullGitDataArray) in
                     DispatchQueue.main.async { [weak self] in
                         self?.gitDataArray += fullGitDataArray
@@ -105,6 +110,7 @@ class BrowseViewController: UIViewController, UITableViewDelegate, UITableViewDa
                         self?.contentTableView.isScrollEnabled = true
                         self?.loadMoreIndicator.stopAnimating()
                         self?.footerView.isHidden = true
+                        self?.loadingMoreProcess = false
                     }
                 })
                 

@@ -86,6 +86,8 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         searchBar.resignFirstResponder()
     }
 
+    var loadingMoreProcess = false
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         searchBar.resignFirstResponder()
         
@@ -93,7 +95,8 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
         let deltaOffset = maximumOffset - currentOffset
         
-        if deltaOffset <= 0 {
+        if deltaOffset <= 0 && loadingMoreProcess == false {
+            loadingMoreProcess = true
             footerView.isHidden = false
             scrollView.isScrollEnabled = false
             loadMoreIndicator.startAnimating()
@@ -124,6 +127,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
                     self?.footerView.isHidden = true
                     self?.contentTableView.isScrollEnabled = true
                     self?.contentTableView.reloadData()
+                    self?.loadingMoreProcess = false
                 }
             }
         }

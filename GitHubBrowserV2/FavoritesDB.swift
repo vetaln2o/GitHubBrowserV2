@@ -77,9 +77,11 @@ class FavoritesDB {
     
     func deleteFromFavorites(_ repositoryIndex: Int) {
         let favoritesFromDB = uiRealm.objects(Repository.self)
-        let deletedRepo = favoritesFromDB[repositoryIndex]
-        try! uiRealm.write {
-            uiRealm.delete(deletedRepo)
+        if favoritesFromDB.indices.contains(repositoryIndex) {
+            let deletedRepo = favoritesFromDB[repositoryIndex]
+            try! uiRealm.write {
+                uiRealm.delete(deletedRepo)
+            }
         }
     }
     
@@ -92,8 +94,10 @@ class FavoritesDB {
                 break
             }
         }
-        try! uiRealm.write {
-            uiRealm.delete(deletedRepo[0])
+        if !deletedRepo.isEmpty {
+            try! uiRealm.write {
+                uiRealm.delete(deletedRepo[0])
+            }
         }
     }
     

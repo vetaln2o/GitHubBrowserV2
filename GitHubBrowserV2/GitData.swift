@@ -160,20 +160,40 @@ struct GitData {
         }
     }
     
+//    func loadMoreInfo(for gitArray: [GitData], completion: @escaping ([GitData])->Void) {
+//        var fullGitArray = [GitData]()
+//        for (index, git) in gitArray.enumerated() {
+//            print(index)
+//            if git.updatedAt == nil {
+//                git.getRepoList(from: git.url, with: .loadMore) { (newGit) in
+//                    fullGitArray.append(newGit[0])
+//                    if index == gitArray.count - 1 {
+//                        completion(fullGitArray)
+//                    }
+//                }
+//            }
+//        }
+//    }
+    
     func loadMoreInfo(for gitArray: [GitData], completion: @escaping ([GitData])->Void) {
+        print("Load more started")
+        let loadGroup = DispatchGroup()
         var fullGitArray = [GitData]()
-        for (index, git) in gitArray.enumerated() {
-            if git.updatedAt == nil {
-                git.getRepoList(from: git.url, with: .loadMore) { (newGit) in
+        let _ = DispatchQueue.global(qos: .userInitiated)
+        DispatchQueue.concurrentPerform(iterations: gitArray.count) { index in
+            print(index)
+            if gitArray[index].updatedAt == nil {
+                loadGroup.enter()
+                gitArray[index].getRepoList(from: gitArray[index].url, with: .loadMore) { (newGit) in
                     fullGitArray.append(newGit[0])
-                    if index == gitArray.count - 1 {
-                        completion(fullGitArray)
-                    }
+                    loadGroup.leave()
                 }
             }
         }
+        loadGroup.notify(queue: DispatchQueue.main) {
+            completion(fullGitArray)
+        }
     }
-    
 }
 
 protocol NewFavoritesAddedDelegate {
