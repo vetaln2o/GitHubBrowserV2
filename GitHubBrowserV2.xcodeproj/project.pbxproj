@@ -20,6 +20,7 @@
 		91A08BD32205E46700D7FBEE /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A08BD22205E46700D7FBEE /* FavoritesViewController.swift */; };
 		91A08BD522062E1D00D7FBEE /* RepositoryInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A08BD422062E1D00D7FBEE /* RepositoryInfoTableViewCell.swift */; };
 		91A08BD72206329400D7FBEE /* GitData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A08BD62206329400D7FBEE /* GitData.swift */; };
+		91DAD76C221AAEAE00B4B74B /* GitMoyaTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DAD76B221AAEAE00B4B74B /* GitMoyaTarget.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +40,7 @@
 		91A08BD22205E46700D7FBEE /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		91A08BD422062E1D00D7FBEE /* RepositoryInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryInfoTableViewCell.swift; sourceTree = "<group>"; };
 		91A08BD62206329400D7FBEE /* GitData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitData.swift; sourceTree = "<group>"; };
+		91DAD76B221AAEAE00B4B74B /* GitMoyaTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitMoyaTarget.swift; sourceTree = "<group>"; };
 		9F14F40AE46246D4E431D8D6 /* Pods_GitHubBrowserV2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GitHubBrowserV2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -98,6 +100,7 @@
 				91A08BC22205E2F300D7FBEE /* Main.storyboard */,
 				91A08BD62206329400D7FBEE /* GitData.swift */,
 				910F0770220C612800E96FFE /* FavoritesDB.swift */,
+				91DAD76D221AAEB400B4B74B /* Networking */,
 				44C1A0B12215BCD300956FF2 /* Controllers */,
 				44C1A0B02215BCB600956FF2 /* UI ELements */,
 				91A08BBE2205E2F300D7FBEE /* AppDelegate.swift */,
@@ -106,6 +109,14 @@
 				91A08BCA2205E2F600D7FBEE /* Info.plist */,
 			);
 			path = GitHubBrowserV2;
+			sourceTree = "<group>";
+		};
+		91DAD76D221AAEB400B4B74B /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				91DAD76B221AAEAE00B4B74B /* GitMoyaTarget.swift */,
+			);
+			path = Networking;
 			sourceTree = "<group>";
 		};
 		D25724D0EC516CEFFF053EB5 /* Frameworks */ = {
@@ -224,11 +235,13 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-GitHubBrowserV2/Pods-GitHubBrowserV2-frameworks.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-GitHubBrowserV2/Pods-GitHubBrowserV2-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/Down/Down.framework",
+				"${BUILT_PRODUCTS_DIR}/Moya/Moya.framework",
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
@@ -236,12 +249,14 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Down.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Moya.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-GitHubBrowserV2/Pods-GitHubBrowserV2-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-GitHubBrowserV2/Pods-GitHubBrowserV2-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -260,6 +275,7 @@
 				91A08BBF2205E2F300D7FBEE /* AppDelegate.swift in Sources */,
 				44C1A0AF2215BC9E00956FF2 /* MessageLabel.swift in Sources */,
 				4425108D22117C1C00B9AF9B /* DetailViewController.swift in Sources */,
+				91DAD76C221AAEAE00B4B74B /* GitMoyaTarget.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

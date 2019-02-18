@@ -39,7 +39,7 @@ class BrowseViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tableLoadIndicator.hidesWhenStopped = true
         tableLoadIndicator.startAnimating()
         contentTableView.isHidden = true
-        gitData.getRepoList(from: "https://api.github.com/repositories?since=1&per_page=100", with: .browse) { (data) in
+        gitData.getRepoList(actionType: .browse, page: 1, searchWord: nil, repoName: nil) { (data) in
             self.gitData.loadMoreInfo(for: data, completion: { (fullGitInfo) in
                 DispatchQueue.main.async { [weak self] in
                     self?.gitDataArray = fullGitInfo
@@ -101,7 +101,7 @@ class BrowseViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     private func loadMoreRepositories() {
         if let lastRepositoryID = gitDataArray.last?.id {
-            gitData.getRepoList(from: "https://api.github.com/repositories?since=\(lastRepositoryID)&per_page=100", with: .browse) { (data) in
+            gitData.getRepoList(actionType: .browse, page: lastRepositoryID, searchWord: nil, repoName: nil) { (data) in
                 self.gitData.loadMoreInfo(for: data, completion: { (fullGitDataArray) in
                     DispatchQueue.main.async { [weak self] in
                         self?.gitDataArray += fullGitDataArray

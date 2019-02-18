@@ -65,8 +65,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
                 tableLoadIndicator.startAnimating()
                 contentTableView.isHidden = true
                 gitData.getRepoList(
-                    from: "https://api.github.com/search/repositories?q=\(searchText)&page=\(repositoryListPage)&per_page=100",
-                with: .search) { (gitArray) in
+                    actionType: .search, page: repositoryListPage, searchWord: searchText, repoName: nil) { (gitArray) in
                     DispatchQueue.main.async { [weak self] in
                         self?.gitDataArray = gitArray
                         self?.contentTableView.reloadData()
@@ -120,7 +119,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     func loadMoreRepositories() {
         if let searchText = searchBar.text {
             repositoryListPage += 1
-            gitData.getRepoList(from: "https://api.github.com/search/repositories?q=\(searchText)&page=\(repositoryListPage)&per_page=100", with: .search) { (newGitData) in
+            gitData.getRepoList(actionType: .search, page: repositoryListPage, searchWord: searchText, repoName: nil) { (newGitData) in
                 DispatchQueue.main.async { [weak self] in
                     self?.gitDataArray += newGitData
                     self?.loadMoreIndicator.stopAnimating()
