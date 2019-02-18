@@ -8,8 +8,9 @@
 
 import Foundation
 import Alamofire
+import Moya
 
-struct GitData {
+struct GitData: Codable {
     var id: Int = 0
     var htmlUrl: String = ""
     var url: String = ""
@@ -20,86 +21,67 @@ struct GitData {
     var language: String?
     var stargazersCount: Int?
     var forksCount: Int?
-    var owner: Owner = Owner()
+    var owner: Owner
     var textMatches: [TextMatches]?
     
-    struct TextMatches {
+    private enum CodingKeys: String, CodingKey
+    {
+        case id
+        case htmlUrl = "html_url"
+        case url
+        case fullName = "name"
+        case fullNameRepo = "full_name"
+        case description
+        case updatedAt = "updated_at"
+        case language
+        case stargazersCount = "stargazers_count"
+        case forksCount = "forks_count"
+        case owner
+        case textMatches = "text_matches"
+    }
+    
+    
+    struct TextMatches: Codable {
         var property: String?
         var matches: [Matches]?
+        
+        private enum CodingKeys: String, CodingKey {
+            case property
+            case matches
+        }
         
         init(){
         }
         
-        init(json: [String : Any]) {
-            self.property = json["property"] as? String
-            if let matchArray = json["matches"] as? Array<Dictionary<String,Any>> {
-                var newMatchesArray = [Matches]()
-                for item in matchArray {
-                    let newItem = Matches(json: item)
-                    newMatchesArray.append(newItem)
-                }
-                self.matches = newMatchesArray
-            }
-        }
-        
-        struct Matches {
+        struct Matches: Codable {
             var text: String?
             var indices: [Int]?
             init() {
             }
-            init(json: [String : Any]) {
-                self.text = json["text"] as? String
-                self.indices = json["indices"] as? [Int]
-            }
         }
     }
     
-    struct  Owner {
+    struct  Owner: Codable {
         var avatarUrl: String = ""
         var avatarImg: Data?
         
+        private enum CodingKeys: String, CodingKey {
+            case avatarUrl = "avatar_url"
+            case avatarImg
+        }
         init() {
             
         }
-        
-        init(json: [String : Any]) {
-            self.avatarUrl = json["avatar_url"] as! String
-        }
+
         init(avatarUrl: String) {
             self.avatarUrl = avatarUrl
         }
     }
 
     init() {
-        
+        self.owner = Owner()
     }
-    
-    init (json: [String : Any]) {
-        self.id = (json["id"] as? Int) ?? 0
-        self.htmlUrl = (json["html_url"] as? String) ?? ""
-        self.url = (json["url"] as? String) ?? ""
-        self.fullName = (json["name"] as? String) ?? ""
-        self.fullNameRepo = (json["full_name"] as? String) ?? ""
-        self.description = json["description"] as? String
-        self.updatedAt = json["updated_at"] as? String
-        self.language = json["language"] as? String
-        self.stargazersCount = json["stargazers_count"] as? Int
-        self.forksCount = json["forks_count"] as? Int
-        if let owner = json["owner"] as? Dictionary<String,Any> {
-            self.owner = Owner(json: owner)
-        } else {
-            self.owner = Owner()
-        }
-        if let matchesArray = json["text_matches"] as? Array<Dictionary<String,Any>> {
-            var textMatchesArray = [TextMatches]()
-            for match in matchesArray {
-                let newMatch = TextMatches(json: match)
-                textMatchesArray.append(newMatch)
-            }
-            self.textMatches = textMatchesArray
-        }
-    }
-    
+ 
     init (id: Int, htmlUrl: String, url: String, fullName: String, fullNameRepo: String, description: String?,
           updatedAt: String?, language: String?, stargazersCount: Int?,
           forksCount: Int?, avatarUrl: String) {
@@ -122,59 +104,52 @@ struct GitData {
         case loadMore
     }
     
-    func getRepoList(from url: String, with type: TypeOfAction, completion: @escaping ([GitData]) -> Void) {
-        var headers = HTTPHeaders()
-        headers["Authorization"] = "token cbe072a1b995ab28b49ddb45fe0c5271b24908a6"
-        if type == .search {
-            headers["Accept"] = "pplication/vnd.github.v3.text-match+json"
-        }
-        request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON { (responseJSON) in
-            switch responseJSON.result {
-            case .success(let value):
-                var gitDataArray: [GitData] = []
-                switch type {
-                case .browse:
-                    guard let jsonArray = value as? Array<[String : Any]> else { return }
-                    for jsonObject in jsonArray {
-                        let git = GitData(json: jsonObject)
-                        gitDataArray.append(git)
+    func getRepoList(actionType: TypeOfAction, page: Int?=nil, searchWord: String?=nil, repoName: String?=nil, completion: @escaping ([GitData]) -> Void)  {
+        let provider = MoyaProvider<Git>(plugins: [NetworkLoggerPlugin(verbose: true)])
+        switch actionType {
+        case .browse:
+            provider.request(.browse(page ?? 1)) { (result) in
+                switch result {
+                case .success(let response):
+                    do {
+                        let result = try JSONDecoder().decode([GitData].self, from: response.data)
+                        completion(result)
+                    } catch (let error) {
+                        print("Error parsing json: \(error)")
                     }
-                    completion(gitDataArray)
-                case .search:
-                    guard let jsonAnswer = value as? [String : Any] else { return }
-                    guard let jsonArray = jsonAnswer["items"] as? Array<[String : Any]> else { return }
-                    for jsonObject in jsonArray {
-                        let git = GitData(json: jsonObject)
-                        gitDataArray.append(git)
-                    }
-                    completion(gitDataArray)
-                case .loadMore:
-                    guard let jsonObject = value as? [String : Any] else { return }
-                    let git = GitData(json: jsonObject)
-                    completion([git])
+                case .failure(let error): print(error)
                 }
-
-            case .failure(let error):
-                print(error)
             }
+        case .search:
+            provider.request(.search(searchWord ?? "", page ?? 1)) { (result) in
+                switch result {
+                case .success(let response):
+                    do {
+                        let result = try response.map([GitData].self, atKeyPath: "items", using: JSONDecoder(), failsOnEmptyData: false)
+                        completion(result)
+                    } catch (let error) {
+                        print("Error parsing json: \(error)")
+                    }
+                case .failure(let error): print(error)
+                }
+            }
+        case .loadMore:
+            provider.request(.loadMore(repoName ?? "")) { (result) in
+                switch result {
+                case .success(let response):
+                    do {
+                        let result = try response.map(GitData.self)
+                        completion([result])
+                    } catch  (let error) {
+                        print("Error parsing json: \(error)")
+                    }
+                case .failure(let error): print(error)
+                }
+            }
+            
         }
     }
-    
-//    func loadMoreInfo(for gitArray: [GitData], completion: @escaping ([GitData])->Void) {
-//        var fullGitArray = [GitData]()
-//        for (index, git) in gitArray.enumerated() {
-//            print(index)
-//            if git.updatedAt == nil {
-//                git.getRepoList(from: git.url, with: .loadMore) { (newGit) in
-//                    fullGitArray.append(newGit[0])
-//                    if index == gitArray.count - 1 {
-//                        completion(fullGitArray)
-//                    }
-//                }
-//            }
-//        }
-//    }
-    
+
     func loadMoreInfo(for gitArray: [GitData], completion: @escaping ([GitData])->Void) {
         let loadGroup = DispatchGroup()
         var fullGitArray = [GitData]()
@@ -182,10 +157,10 @@ struct GitData {
         DispatchQueue.concurrentPerform(iterations: gitArray.count) { index in
             if gitArray[index].updatedAt == nil {
                 loadGroup.enter()
-                gitArray[index].getRepoList(from: gitArray[index].url, with: .loadMore) { (newGit) in
+                gitArray[index].getRepoList(actionType: .loadMore, page: nil, searchWord: nil, repoName: gitArray[index].fullNameRepo, completion: { (newGit) in
                     fullGitArray.append(newGit[0])
                     loadGroup.leave()
-                }
+                })
             }
         }
         loadGroup.notify(queue: DispatchQueue.main) {

@@ -9,4 +9,5 @@ target 'GitHubBrowserV2' do
 pod 'RealmSwift'
 pod 'Down'
 pod 'Alamofire'
+pod 'Moya'
 end
