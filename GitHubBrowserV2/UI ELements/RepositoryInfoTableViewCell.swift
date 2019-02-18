@@ -83,7 +83,7 @@ class RepositoryInfoTableViewCell: UITableViewCell {
         if let forks = repository.forksCount {
             self.forksLabel.text = "\(forks) forks"
         }
-        self.avatarImageView.image = UIImage()
+        self.avatarImageView.image = UIImage(named: "image-loading")
         imageLoadingInProgress += 1
         takeImage(from: repository.owner.avatarUrl) { (image) in
             if self.imageLoadingInProgress == 1 {
@@ -200,7 +200,10 @@ class RepositoryInfoTableViewCell: UITableViewCell {
             case .success(let data):
                 guard let image = UIImage(data: data) else {return}
                 completion(image)
-            case .failure(let error): print(error)
+            case .failure(_):
+                if let image = UIImage(named: "no-avatar") {
+                    completion(image)
+                }
             }
         }
     }

@@ -32,9 +32,12 @@ class FavoritesDB {
     
     private let uiRealm = try! Realm()
     
-    func getFavoritesRepositories() -> [GitData] {
+    func getFavoritesRepositories(sortedBy: String? = nil, ascending: Bool? = nil) -> [GitData] {
         var favoritesArray = [GitData]()
-        let favoritesFromDB = uiRealm.objects(Repository.self)
+        var favoritesFromDB = uiRealm.objects(Repository.self)
+        if let sortedKey = sortedBy, let ascending = ascending {
+            favoritesFromDB = favoritesFromDB.sorted(byKeyPath: sortedKey, ascending: ascending)
+        }
         for element in favoritesFromDB {
             favoritesArray.append(GitData(id: element.id, htmlUrl: element.htmlUrl, url: element.url,
                                           fullName: element.fullName, fullNameRepo: element.fullNameRepo, description: element.repDescription,

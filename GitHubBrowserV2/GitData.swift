@@ -176,12 +176,10 @@ struct GitData {
 //    }
     
     func loadMoreInfo(for gitArray: [GitData], completion: @escaping ([GitData])->Void) {
-        print("Load more started")
         let loadGroup = DispatchGroup()
         var fullGitArray = [GitData]()
         let _ = DispatchQueue.global(qos: .userInitiated)
         DispatchQueue.concurrentPerform(iterations: gitArray.count) { index in
-            print(index)
             if gitArray[index].updatedAt == nil {
                 loadGroup.enter()
                 gitArray[index].getRepoList(from: gitArray[index].url, with: .loadMore) { (newGit) in

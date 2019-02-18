@@ -91,13 +91,18 @@ class FavoritesViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return 2
+        switch component {
+        case 0: return 3
+        case 1: return 2
+        default: return 0
+        }
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         switch (component, row) {
         case (0,0): return "by name"
         case (0,1): return "by date"
+        case (0,2): return "by language"
         case (1,0): return "A-Z;0-9"
         case (1,1): return "Z-A;9-0"
         default: return ""
@@ -118,6 +123,17 @@ class FavoritesViewController: UIViewController, UITableViewDelegate, UITableVie
         sortButton.isEnabled = true
         contentTable.alpha = 1.0
         contentTable.isUserInteractionEnabled = true
+        let sortNameIndex = sortingPicker.selectedRow(inComponent: 0)
+        let sortAscending = sortingPicker.selectedRow(inComponent: 1) == 0 ? true : false
+        var sortFieldName = ""
+        switch sortNameIndex {
+        case 0: sortFieldName = "fullName"
+        case 1: sortFieldName = "updatedAt"
+        case 2: sortFieldName = "language"
+        default: break
+        }
+        favoritesArray = FavoritesDB.shared.getFavoritesRepositories(sortedBy: sortFieldName, ascending: sortAscending)
+        contentTable.reloadData()
     }
     
 }
